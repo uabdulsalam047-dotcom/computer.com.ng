@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Tic Tac Toe</title>
+ <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>PLay with Computer</h1>
+    <div class="mother">
+		<div >How to Play</div>
+		<div class="child">1. Click on any of the boxes to play.
+			<br>2. You are X while Computer is O.
+            <br>3. Computer plays Immediately You play
+		</div>
+	</div>
+    <form action="">
+		<input type="text" value="Player scores:" id="f" readonly><input type="text" id="pxs" value="" readonly>
+		<br>
+		<input type="text" value="Computer scores:" id="f" readonly><input type="text" id="pos" value="" readonly>
+	</form>
+  <div id="board">
+    <div class="cell" id="cell-0"></div>
+    <div class="cell" id="cell-1"></div>
+    <div class="cell" id="cell-2"></div>
+    <div class="cell" id="cell-3"></div>
+    <div class="cell" id="cell-4"></div>
+    <div class="cell" id="cell-5"></div>
+    <div class="cell" id="cell-6"></div>
+    <div class="cell" id="cell-7"></div>
+    <div class="cell" id="cell-8"></div>
+  </div>
+  <p id="result"></p>
+  <p id="announcer"></p>
+  <p id="announcers"></p>
+  <button id="reset-button">Restart</button>
+  <a href="home.html">Back To Home</a>
+
+  <script>
+
+    let board = ['', '', '', '', '', '', '', '', ''];
+    let player = 'X';
+    let computer = 'O';
+    let gameOver = false;
+
+    const cells = document.querySelectorAll('.cell');
+    const resultDisplay = document.getElementById('result');
+    const resetButton = document.getElementById('reset-button');
+
+    cells.forEach((cell, index) => {
+        cell.addEventListener('click', () => {
+            if (gameOver) return;
+            if (board[index] === '') {
+            board[index] = player;
+            cell.textContent = player;
+            checkWinner();
+            if (!gameOver) {
+                computerMove();
+            }
+            }
+            if(document.getElementById("pos").value > document.getElementById("pxs").value){
+				document.getElementById("announcers").innerHTML="Computer is leading"
+			}
+			else if(document.getElementById("pos").value < document.getElementById("pxs").value){
+				document.getElementById("announcers").innerHTML="You are Leading"
+			}
+			else{
+				document.getElementById("announcers").innerHTML="Its a Tie now";
+			}
+        });
+    });
+
+    function computerMove() {
+        let emptyCells = [];
+        for (let i = 0; i < board.length; i++) {
+            if (board[i] === '') {
+            emptyCells.push(i);
+            }
+        }
+        let randomIndex = Math.floor(Math.random() * emptyCells.length);
+        let cellIndex = emptyCells[randomIndex];
+        board[cellIndex] = computer;
+        cells[cellIndex].textContent = computer;
+        checkWinner();
+    }
+
+    function checkWinner() {
+    const winningCombinations = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6],
+    ];
+
+        for (const combination of winningCombinations) {
+            if (
+            board[combination[0]] === board[combination[1]] &&
+            board[combination[1]] === board[combination[2]] &&
+            board[combination[0]] !== ''
+            ) {
+            if (board[combination[0]] === player) {
+                resultDisplay.textContent = 'You win!';
+                document.getElementById("pxs").value-=-1;
+            } else {
+                resultDisplay.textContent = 'Computer wins!';
+                document.getElementById("pos").value-=-1;
+            }
+            gameOver = true;
+            return;
+            }
+        }
+
+        if (!board.includes('')) {
+            resultDisplay.textContent = 'It\'s a draw!';
+            gameOver = true;
+        }
+    }
+
+    function resetBoard(){
+        board = ['', '', '', '', '', '', '', '', ''];
+        cells.forEach((cell) => {
+            cell.textContent = '';
+        });
+        resultDisplay.textContent = '';
+        gameOver = false;
+    }
+    cells.forEach((cell, index) => {
+        cell.addEventListener('click', () => {
+            if (gameOver) {
+            resetBoard();
+            } else if (board[index] === '') {
+            board[index] = player;
+            cell.textContent = player;
+            checkWinner();
+            if (!gameOver) {
+                computerMove();
+            }
+            }
+        });
+        });
+
+  </script>
+  <footer>Created by: Usman Abdulsalam
+        <br>Whatsapp: 07035514222
+        <br>call:     070176127843
+        <br>Tiktok: @Abdulsalam Usman
+        <br>G-mail: uabdulsalam047@gmail.com
+    </footer>
+</body>
+</html>
